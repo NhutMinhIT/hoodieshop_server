@@ -6,7 +6,7 @@ function authJwt() {
     return expressJwt({
         secret,
         algorithms: ['HS256'],
-        isRevoked: isRevoked
+        //  isRevoked: isRevoked
     }).unless({
         path: [
             { url: /\/public\/uploads(.*)/, methods: ['GET', 'OPTIONS'] },

@@ -23,24 +23,32 @@ router.get('/:id', async(req, res) => {
 })
 
 router.post('/', async(req, res) => {
-    let user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        passwordHash: bcrypt.hashSync(req.body.password, 10),
-        phone: req.body.phone,
-        isAdmin: req.body.isAdmin,
-        street: req.body.street,
-        apartment: req.body.apartment,
-        zip: req.body.zip,
-        city: req.body.city,
-        country: req.body.country,
-    })
-    user = await user.save();
+    const { name, email, password, phone, isAdmin, street, apartment, zip, city, country } = req.body;
 
-    if (!user)
-        return res.status(400).send('the user cannot be created!')
+    const passwordHash = await bcrypt.hash(password, 10);
+    try {
+        const oldUser = await User.findOne({ email });
 
-    res.send(user);
+        if (oldUser) {
+            return res.json({ error: "User Exists" });
+        }
+        const user = await User.create({
+            name,
+            email,
+            password: passwordHash,
+            phone,
+            isAdmin,
+            street,
+            apartment,
+            zip,
+            city,
+            country
+        });
+
+        res.send(user);
+    } catch (error) {
+        res.send({ status: "error" });
+    }
 })
 
 router.put('/:id', async(req, res) => {

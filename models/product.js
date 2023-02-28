@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        require: true,
     },
     description: {
         type: String,
-        required: true
+        require: true
     },
     richDescription: {
         type: String,
@@ -31,11 +31,11 @@ const productSchema = mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
-        required: true
+        require: true
     },
     countInStock: {
         type: Number,
-        required: true,
+        require: true,
         min: 0,
         max: 255
     },
